@@ -57,5 +57,5 @@ async function asyncInit() {
 }
 
 export function init() {
-    asyncInit();
+    return asyncInit();
 }
