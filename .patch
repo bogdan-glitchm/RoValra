@@ -1,0 +1,84 @@
+diff --git a/src/content/core/packages/dompurify.js b/src/content/core/packages/dompurify.js
+index e0a82a6..ac697d8 100644
+--- a/src/content/core/packages/dompurify.js
++++ b/src/content/core/packages/dompurify.js
+@@ -1,15 +1,41 @@
+ import DOMPurify from 'dompurify';
+ 
+-export const sanitizeStrict = (content) => {
+-    return DOMPurify.sanitize(content, {
+-        ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'u', 's', 'p', 'div', 'span', 'br', 'ul', 'ol', 'li'],
+-        ALLOWED_ATTR: []
+-    });
+-};
++const SANITIZE_PROFILE = Symbol('SANITIZE_PROFILE');
++const mkprof = (config) => Object.freeze([{...config, [SANITIZE_PROFILE]: true}]);
++
++/**
++ *  @type {{
++ *      Untrusted: {
++ *          Default: [object],
++ *          Markdown: [object]
++ *      },
++ *      Default: [object]
++ * }}
++ */
++export const sanitize = Object.freeze({
++    Untrusted: {
++        Default: mkprof({
++            ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'u', 's', 'p', 'div', 'span', 'br', 'ul', 'ol', 'li', 'code'],
++            ALLOWED_ATTR: []
++        }),
++        Markdown: mkprof({
++            ALLOWED_TAGS: ['b', 'i', 'u', 'code', 'br'],
++            ALLOWED_ATTR: []
++        })
++    },
++    Default: mkprof({})
++});
+ 
+ export const safeHtml = (strings, ...values) => {
+     let result = strings[0];
++    let profile = [];
+     values.forEach((val, i) => {
++        if (val && typeof val === 'object' && val[0] && typeof val[0] === 'object' && val[0][SANITIZE_PROFILE] === true) {
++            const valueStr = '';
++            result += valueStr + strings[i + 1];
++            profile = val;
++            return;
++        }
+         const valueStr = (val === null || val === undefined) ? '' : String(val);
+         const escaped = valueStr
+             .replace(/&/g, '&amp;')
+@@ -19,7 +45,7 @@ export const safeHtml = (strings, ...values) => {
+             .replace(/'/g, '&#39;');
+         result += escaped + strings[i + 1];
+     });
+-    return DOMPurify.sanitize(result);
++    return DOMPurify.sanitize(result, ...profile);
+ };
+ 
+-export default DOMPurify;
+\ No newline at end of file
++export default DOMPurify;
+diff --git a/src/content/core/utils/markdown.js b/src/content/core/utils/markdown.js
+index 2a156af..10de96a 100644
+--- a/src/content/core/utils/markdown.js
++++ b/src/content/core/utils/markdown.js
+@@ -1,5 +1,5 @@
+ import { marked } from 'marked'; // Better markdown!!!
+-import DOMPurify from 'dompurify';
++import { safeHtml, sanitize } from '../../core/packages/dompurify';
+ 
+ export function parseMarkdown(text, themeColors = {}) {
+     if (!text) return '';
+@@ -60,8 +60,5 @@ export function parseUntrustedMarkdown(text) {
+ 
+     text = text.replaceAll(/\r\n|\r|\n/g, '<br>');
+ 
+-    return DOMPurify.sanitize(text, {
+-        ALLOWED_TAGS: ['b', 'i', 'u', 'code', 'br'],
+-        ALLOWED_ATTR: [],
+-    }).trim();
++    return safeHtml`${sanitize.Untrusted.Markdown}${text}`.trim();
+ }

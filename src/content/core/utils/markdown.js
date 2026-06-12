@@ -1,5 +1,5 @@
 import { marked } from 'marked'; // Better markdown!!!
-import DOMPurify from 'dompurify';
+import { sanitizeHTML, sanitize, safeHtml } from '../../core/packages/dompurify';
 
 export function parseMarkdown(text, themeColors = {}) {
     if (!text) return '';
@@ -29,6 +29,7 @@ export function parseMarkdown(text, themeColors = {}) {
  */
 export function parseUntrustedMarkdown(text) {
     if (!text) return '';
+    text = safeHtml`${sanitize.Untrusted.Markdown}${text}`;
 
     // Headings
     text = text.replace(/^# (.*)$/m, (match, heading) => {
@@ -60,8 +61,5 @@ export function parseUntrustedMarkdown(text) {
 
     text = text.replaceAll(/\r\n|\r|\n/g, '<br>');
 
-    return DOMPurify.sanitize(text, {
-        ALLOWED_TAGS: ['b', 'i', 'u', 'code', 'br'],
-        ALLOWED_ATTR: [],
-    }).trim();
+    return sanitizeHTML`${sanitize.Untrusted.Markdown}${text}`.trim();
 }
