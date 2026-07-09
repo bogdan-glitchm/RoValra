@@ -158,6 +158,9 @@ import { init as initCatalogExplorer } from './features/catalog/explorer.js';
 import { enforceSettingOverrides } from './core/settings/handlesettings.js';
 import { refreshRemoteSettingLocks } from './core/settings/remoteSettingLocks.js';
 
+
+import { } from './core/onStartup/_all.js';
+
 let pageLoaded = false;
 let lastPath = window.location.pathname.toLowerCase();
 

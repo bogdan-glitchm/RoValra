@@ -1,22 +1,23 @@
 import i18next from 'i18next';
+import { GetAssetManagerAsync } from '../assets/assetManager';
 
 let i18nInitialized = false;
 const i18nPromise = (async () => {
     if (i18nInitialized) return;
 
     try {
+        const assetManager = await GetAssetManagerAsync();
         const settings = await new Promise(
             (resolve) => chrome.storage.local.get({ language: 'en' }, resolve), //Place holder in case that wasnt clear.
         );
         const language = settings.language || 'en';
 
-        const response = await fetch(
-            chrome.runtime.getURL(`public/Assets/locales/${language}.json`),
-        ); // Verified
+        const response = await assetManager.readAssetFile("UX.locale", {"%1": language});
         const translations = await response.json();
 
         await i18next.init({
             lng: language,
+            fallbackLng: 'en',
             debug: false,
             resources: {
                 [language]: {

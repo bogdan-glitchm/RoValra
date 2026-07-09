@@ -22,6 +22,7 @@
     "yaml": "^2.9.0"
   },
   "dependencies": {
+    "@the_glitch_master/jstools": "^1.4.1",
     "dompurify": "^3.4.11",
     "fflate": "^0.8.3",
     "fzstd": "^0.1.1",
@@ -29,7 +30,8 @@
     "marked": "^18.0.5",
     "roavatar-renderer": "^1.5.12",
     "roblox-bat": "0.6.5",
-    "swagger-ui-dist": "^5.32.8"
+    "swagger-ui-dist": "^5.32.8",
+    "zone.js": "^0.16.2"
   },
   "overrides": {
     "brace-expansion": "^2.0.1",

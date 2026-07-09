@@ -105,6 +105,9 @@ esbuild
         entryPoints: [backgroundEntryPath],
         outfile: 'dist/background.js',
         bundle: true,
+        alias: {
+            'async_hooks': path.resolve(__dirname, 'src', 'content', 'core', 'polyfills.js') 
+        },
     })
     .catch(() => process.exit(1));
 
@@ -191,6 +194,9 @@ esbuild
         entryPoints: [contentEntryPath],
         outfile: 'dist/content.js',
         bundle: true,
+        alias: {
+            'async_hooks': path.resolve(__dirname, 'src', 'content', 'core', 'polyfills.js') 
+        },
         // This injects Draco directly into the content script context for roavatar-renderer
         banner: {
             js: bannerText + '\n' + dracoSource,
