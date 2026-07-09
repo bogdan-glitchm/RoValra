@@ -86,7 +86,7 @@ class AssetManagerClass {
     }
 
     async readAssetFile(name: string, fmt: FormatValues = {}) {
-        const lock = await this.getLock(`asset:${name}`);
+        const lock = await this.getLock(`asset:content:${name}`);
         const value = await lock.with(async () => {
             let cachedValue;
             if (cachedValue = this.cache[`asset:${name}:fmt=${JSON.stringify(fmt)}`])

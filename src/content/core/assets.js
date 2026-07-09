@@ -54,7 +54,7 @@ function getAssetPath(assetName) {
 function updateResolvedDynamicAssets() {
     if (!resolvedAssets) return;
     ROVALRA_LOGO_DEPENDENT_ASSETS.forEach((assetName) => {
-        resolvedAssets[assetName] = resolveAssetPath(getAssetPath("UI." + assetName));
+        resolvedAssets[assetName] = getAssetPath("UI." + assetName);
     });
 }
 
