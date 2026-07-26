@@ -152,6 +152,7 @@ import { init as initDisplayNameGradient } from './features/profile/header/displ
 import { init as initChatEligibilityTooltip } from './features/profile/header/chatEligibilityTooltip.js';
 import { init as initProfileCustomization } from './features/profile/profileCustomization.js';
 import { initProfileButton as initSendRobuxProfileButton } from './features/plus/sendRobux.js';
+import { init as initPersonalisationPage } from './features/custom/personalisation/personalise.ts';
 
 // Settings
 import { init as initSettingsPage } from './features/settings/index.js';
@@ -163,7 +164,7 @@ import { init as initHomeLayout } from './features/home/homeLayout.js';
 import { init as initCustomThemeEditor } from './features/home/customThemeEditor.js';
 import { init as initUnderratedGamesHome } from './features/home/underratedGames.js';
 import { init as initHideAddFriendsButton } from './features/home/hideAddFriendsButton.js';
-import { init as initThemeCatalogPage } from './features/themes/themeCatalogPage.js';
+import { init as initThemeCatalogPage } from './features/custom/themes/themeCatalogPage.js';
 // create
 import { init as initCreateDownload } from './features/create.roblox.com/download.js';
 import { init as initCatalogExplorer } from './features/catalog/explorer.js';
@@ -234,6 +235,7 @@ const featureRoutes = [
             initCustomThemeEditor,
             initThemeCatalogPage,
             initReceiveRobuxNotificationCenter,
+            initPersonalisationPage,
         ],
     },
     // pretty much just the 40% method

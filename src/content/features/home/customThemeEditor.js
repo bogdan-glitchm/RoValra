@@ -19,7 +19,7 @@ import {
     applyCustomThemeField,
     setTheme,
 } from '../sitewide/themeSwitcher.js';
-import { THEME_PATH } from '../themes/themeCatalogPage.js';
+import { THEME_PATH } from '../custom/themes/themeCatalogPage.js';
 
 const ACTIVE_SESSION_KEY = 'rovalra_custom_theme_editor_active';
 const PENDING_THEME_OPEN_KEY = 'rovalra_custom_theme_editor_pending_theme';

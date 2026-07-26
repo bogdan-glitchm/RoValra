@@ -2069,6 +2069,21 @@ export const SETTINGS_CONFIG = {
                 hidden: true,
             },
 
+            MorePersonalisation: {
+                label: 'More personalisation',
+                description: [
+                    'Make small visual tweaks to the Roblox website.'
+                ],
+                type: 'checkbox',
+                default: false,
+                contributors: ['1564574922'],
+                childSettings: {
+                    label: 'Personalise the website',
+                    type: 'button',
+                    event: 'rovalra:more-personalisation'
+                }
+            },
+
             ExplorerEnabled: {
                 label: 'Explorer',
                 description: [

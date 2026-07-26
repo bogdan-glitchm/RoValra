@@ -1,21 +1,21 @@
-import { observeElement } from '../../core/observer.js';
+import { observeElement } from '../../../core/observer.js';
 import {
     loadSettings,
     handleSaveSettings,
-} from '../../core/settings/handlesettings.js';
-import { createButton } from '../../core/ui/buttons.js';
-import { createPillToggle } from '../../core/ui/general/pillToggle.js';
+} from '../../../core/settings/handlesettings.js';
+import { createButton } from '../../../core/ui/buttons.js';
+import { createPillToggle } from '../../../core/ui/general/pillToggle.js';
 import {
     catalogThemeToCustomTheme,
     customThemeMatchesCatalogTheme,
     getCustomThemeSlotThemes,
     getThemeCatalogThemes,
-} from '../../core/themeCatalog.js';
+} from '../../../core/themeCatalog.js';
 import {
     applyCustomTheme,
     refreshThemeSwitcher,
     setTheme,
-} from '../sitewide/themeSwitcher.js';
+} from '../../sitewide/themeSwitcher.js';
 
 export const THEME_PATH = '/theme';
 
