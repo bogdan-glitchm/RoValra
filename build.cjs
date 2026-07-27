@@ -78,6 +78,9 @@ const commonConfig = {
 
     legalComments: 'none',
 
+    jsx: 'automatic',
+    jsxImportSource: 'preact',
+
     banner: {
         js: bannerText,
         css: bannerText,
