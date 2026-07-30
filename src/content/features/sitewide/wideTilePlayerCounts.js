@@ -5,6 +5,7 @@ import {
 } from '../../core/apis/games.js';
 import { observeElement, observeIntersection } from '../../core/observer.js';
 import { settings } from '../../core/settings/getSettings.js';
+import { formatFloat } from '../../core/utils/formatReadable.js';
 
 // Based on the supplied Roblox Enhanced Discovery inline-stat pipeline.
 
@@ -55,20 +56,7 @@ const takeFromSet = (set, amount) => {
 
 function abbr(number) {
     if (number == null) return '—';
-    if (number < 1e3) return String(number);
-    if (number < 1e6) {
-        return `${(number / 1e3)
-            .toFixed(number < 1e4 ? 1 : 0)
-            .replace(/\.0$/, '')}K`;
-    }
-    if (number < 1e9) {
-        return `${(number / 1e6)
-            .toFixed(number < 1e7 ? 1 : 0)
-            .replace(/\.0$/, '')}M`;
-    }
-    return `${(number / 1e9)
-        .toFixed(number < 1e10 ? 1 : 0)
-        .replace(/\.0$/, '')}B`;
+    return formatFloat(number, Math.floor(Math.log10(number)) % 3 === 0 ? 1 : 0);
 }
 
 const scheduleIdle = (() => {

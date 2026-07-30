@@ -1,0 +1,133 @@
+diff --git a/src/content/core/games/playerCount.js b/src/content/core/games/playerCount.js
+index 1fc0d82..5c9a258 100644
+--- a/src/content/core/games/playerCount.js
++++ b/src/content/core/games/playerCount.js
+@@ -1,13 +1,5 @@
++import { formatInteger } from "../utils/formatReadable";
+ 
+ export function formatPlayerCount(num) {
+-    if (num < 1000) {
+-        return num.toString();
+-    }
+-    if (num < 1000000) {
+-        return `${(num / 1000).toFixed(1)}K`;
+-    }
+-    if (num < 1000000000) {
+-        return `${(num / 1000000).toFixed(1)}M`;
+-    }
+-    return `${(num / 1000000000).toFixed(1)}B`;
+-}
+\ No newline at end of file
++    return formatInteger(num, 1);
++}
+diff --git a/src/content/core/utils/formatReadable.ts b/src/content/core/utils/formatReadable.ts
+new file mode 100644
+index 0000000..68bd051
+--- /dev/null
++++ b/src/content/core/utils/formatReadable.ts
+@@ -0,0 +1,71 @@
++function scaleInt(num: bigint, scale: bigint, decimals: bigint): string {
++    const high: bigint = num / scale;
++    const low: bigint = (num % scale) * (10n ** decimals) / scale;
++    if (low !== 0n)
++        return `${high}.${low}`;
++    
++    return `${high}`;
++}
++
++export function formatInteger(num: bigint | number, decimals: bigint | number = 1n): string {
++    if (typeof num === 'number') {
++        if (!Number.isSafeInteger(num)) {
++            console.error(`Attempted to parse non-integer value to integer: ${String(num)}`);
++            return '';
++        }
++        num = BigInt(num);
++    }
++
++    decimals = BigInt(decimals);
++
++    if (num < 1_000n)
++        return num.toString();
++
++    if (num < 1_000_000n)
++        return `${scaleInt(num, 1_000n, decimals)}K`;
++    
++    if (num < 1_000_000_000n)
++        return `${scaleInt(num, 1_000_000n, decimals)}M`;
++    
++    if (num < 1_000_000_000_000n)
++        return `${scaleInt(num, 1_000_000_000n, decimals)}B`;
++
++    if (num < 1_000_000_000_000_000n)
++        return `${scaleInt(num, 1_000_000_000_000n, decimals)}T`;
++
++    return `${(num / 1_000_000_000_000_000n)}Qa`;
++}
++
++export function formatFloat(num: number, decimals: number = 1): string {
++    if (Number.isNaN(num))
++        return "NaN";
++
++    if (num === Infinity)
++        return "infinite";
++
++    if (num === -Infinity)
++        return "-infinite";
++
++    if (num < 1_000) {
++        return num.toString();
++    }
++    if (num < 1_000_000)
++        return `${(num / 1000).toFixed(decimals)}K`;
++    
++    if (num < 1_000_000_000)
++        return `${(num / 1_000_000).toFixed(decimals)}M`;
++    
++    if (num < 1_000_000_000_000)
++        return `${(num / 1_000_000_000).toFixed(decimals)}B`;
++
++    if (num < 1_000_000_000_000_000)
++        return `${(num / 1_000_000_000_000).toFixed(decimals)}T`;
++
++    if (num < 1_000_000_000_000_000_000)
++        return `${(num / 1_000_000_000_000_000).toFixed(decimals)}Qa`;
++
++    if (num < 1_000_000_000_000_000_000_000)
++        return `${(num / 1_000_000_000_000_000_000).toFixed(decimals)}Qi`;
++
++    return `${(num / 1_000_000_000_000_000_000_000).toFixed(decimals)}Sx`;
++}
+diff --git a/src/content/features/sitewide/wideTilePlayerCounts.js b/src/content/features/sitewide/wideTilePlayerCounts.js
+index 290d141..e742363 100644
+--- a/src/content/features/sitewide/wideTilePlayerCounts.js
++++ b/src/content/features/sitewide/wideTilePlayerCounts.js
+@@ -5,6 +5,7 @@ import {
+ } from '../../core/apis/games.js';
+ import { observeElement, observeIntersection } from '../../core/observer.js';
+ import { settings } from '../../core/settings/getSettings.js';
++import { formatFloat } from '../../core/utils/formatReadable.js';
+ 
+ // Based on the supplied Roblox Enhanced Discovery inline-stat pipeline.
+ 
+@@ -55,20 +56,7 @@ const takeFromSet = (set, amount) => {
+ 
+ function abbr(number) {
+     if (number == null) return '—';
+-    if (number < 1e3) return String(number);
+-    if (number < 1e6) {
+-        return `${(number / 1e3)
+-            .toFixed(number < 1e4 ? 1 : 0)
+-            .replace(/\.0$/, '')}K`;
+-    }
+-    if (number < 1e9) {
+-        return `${(number / 1e6)
+-            .toFixed(number < 1e7 ? 1 : 0)
+-            .replace(/\.0$/, '')}M`;
+-    }
+-    return `${(number / 1e9)
+-        .toFixed(number < 1e10 ? 1 : 0)
+-        .replace(/\.0$/, '')}B`;
++    return formatFloat(number, Math.log10(number) % 3 === 0 ? 1 : 0);
+ }
+ 
+ const scheduleIdle = (() => {
