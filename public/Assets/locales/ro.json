@@ -1,4 +1,4 @@
-{   
+{
     "trustedFriends": {
         "pendingConnection": "Prieten de încredere în așteptare",
         "pendingRequest": "Cerere de prieten de încredere în așteptare",
@@ -523,5 +523,8 @@
         "multipleBundlesDescription": "Acest item este probabil folosit ca șablon și este inclus în mai multe bundle-uri.",
         "partOfBundle": "Acest item face parte din bundle-ul [{{bundleName}}]({{bundleUrl}})",
         "viewingFromBundle": "Vizualizezi în prezent un item dintr-un bundle."
+    },
+    "bodyColors": {
+        "addCustom": "Alege o culoare customizata"
     }
 }
