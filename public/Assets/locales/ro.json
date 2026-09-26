@@ -219,7 +219,7 @@
         "noItems": "Nici-un item nu a fost încă găsit.",
         "pack": "Pachet",
         "stipend": "Stipend",
-        "errorUserId": "Nu s-a putut obtine ID-ul utilizatorului.",
+        "errorUserId": "Nu s-a putut obtine ID-ul utilizatorului",
         "errorRetries": "A eșuat după mai multe reîncercări. Ultima eroare: {{error}}"
     },
     "settings": {
