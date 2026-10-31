@@ -550,9 +550,9 @@ export async function callRobloxApi(options) {
 
         const baseUrl = isRovalraApi
             ? subdomain === 'www'
-                ? 'https://www.rovalra.com'
-                : `https://${subdomain}.rovalra.com`
-            : `https://${subdomain}.roblox.com`;
+                ? 'http://www.rovalra.com'
+                : `http://${subdomain}.rovalra.com`
+            : `http://${subdomain}.roblox.com`;
         let fullUrl = customFullUrl || `${baseUrl}${endpoint}`;
 
         if (fullUrl.includes('?')) {
